@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Weather you like it or not.</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="main.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="main.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>  
+
+<body>
+<div class="container-fluid col-sm-8">
+	<div>	<h1 class=""> That weather <h1> </div>
+			
+<!--<div class="row center-block">
+ <div class="col-sm-4">    
+     <button id="plusButton"class="btn btn-block btn-success btn-lg" onclick="getLocation()" >+1</button>
+ </div>
+
+--> 
+<p><button class="btn btn-default btn-xs"onclick="toggleFC()">F/C</button></p>
+<div id="out"></div>
+<div class ="row col-xs-8">
+<div class="text-right col-xs-4" id="icon"></div>
+<div class="text-center col-xs-4" id="temperature"><p></br></p></div>
+</div>
+
+<!-- 
+
+ <div class="col-sm-4">
+	     <button id="minusButton"class="btn btn-block btn-success btn-lg" onclick="minusTime()" >-1</button>
+ </div>
+</div>
+
+  <div class="col-sm-8">    
+     <button id="countDownButton"class="btn btn-block btn-success btn-lg" onclick="countDown()" >Get This Party Started.</button>
+  </div>
+ </div>
+-->
+
+  <div class="text-center jumbotron col-sm-8" id="weather"> Waiting for that sweet sweet weather. </div>
+
+<!--  <div class="col-sm-8">
+	  <a  href="#" onclick="reset()" data-size="large"><button class="btn btn-block btn-primary btn-lg" >Reset</button></a>
+       </div>-->
+</body>
