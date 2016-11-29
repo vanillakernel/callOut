@@ -1,6 +1,6 @@
 var latitude = undefined;
 var longitude = undefined;
-var tempFlag = "";
+var name = "";
 var temp_c=undefined;
 var temp_f=undefined;
 var userLocation = undefined;
@@ -14,10 +14,35 @@ var options = {
 // When the page is rendered, grab location.
 // Make sure you load jQuery in your html doc FIRST!!
 jQuery(document).ready(function($) {
- navigator.geolocation.getCurrentPosition(success, error, options);
-  console.log("http://api.wunderground.com/api/b8df41e2f08c3325/geolookup/conditions/q/"+latitude + "," +longitude + ".json");
-});
+ //navigator.geolocation.getCurrentPosition(success, error, options);
+  $.ajax({
+     url: "https://www.govtrack.us/api/v2/role?current=true",
+     dataType: "json",
+     success: function(parsed_json) {
+       console.log(parsed_json);
+       document.getElementById('results').innerHTML =("<p><b>OMG REPS!</b></p>" );
 
+       parsed_json['objects'].forEach( function (object)
+       {
+	console.log(object.person.name);
+	document.getElementById('results').innerHTML +=("<p>"+object.person.name +" 1-"+object.phone+" Web: "+object.website+" twitter :"+object.person.twitterid+"</p>" );
+       });
+         //name = parsed_json[person]['person']['name'];
+       }//temp_f = parsed_json['current_observation']['temp_f'];
+       //temp_c = parsed_json['current_observation']['temp_c'];
+       //var conditions=(parsed_json['current_observation']['weather']);
+       //var windSpeed=parsed_json['current_observation']['wind_mph'];
+       //var windDir=parsed_json['current_observation']['wind_dir'];
+       //tempFlag="F";
+       //if (conditions="Overcast"){
+       //conditions="Cloudy" //the iconset has an issue with overcast.
+       //}
+       //document.getElementById('results').innerHTML =("<p>"+name+"</p>" );
+       //document.getElementById('temperature').innerHTML =temp_f + " F";
+       //document.getElementById('weather').innerHTML = ("Conditions in "+userLocation + ":</br> " + conditions + " with winds at " +windSpeed+ "mph from the " + windDir);
+     //}
+  })
+})
 //On successful browser location, get weather and update div.
 function success(pos) {
   crd = pos.coords;
@@ -25,7 +50,7 @@ function success(pos) {
   // crd.accuracy
   latitude = crd.latitude;
   $.ajax({
-       url: "http://api.wunderground.com/api/b8df41e2f08c3325/geolookup/conditions/q/"+latitude + "," +longitude + ".json",
+       url: "https://www.govtrack.us/api/v2/role?current=true.json",
      dataType: "jsonp",
      success: function(parsed_json) {
        console.log(parsed_json)
@@ -50,7 +75,7 @@ function success(pos) {
 // If something goes wrong getting weather.
 function error(err) {
   if (error.code == error.PERMISSION_DENIED) {
-        document.getElementById('weather').innerHTML ="Don't you trust me? If you enable locations, I will bring you sweet weather nectars.";
+        document.getElementById('results').innerHTML ="Populating with desfault reps.";
     }
   else{
   console.warn('ERROR(' + err.code + '): ' + err.message);
