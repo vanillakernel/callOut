@@ -1,10 +1,9 @@
 var latitude = undefined;
 var longitude = undefined;
 var name = "";
-var temp_c=undefined;
-var temp_f=undefined;
 var userLocation = undefined;
-// Get their location.
+
+// Get their location, maybe
 var options = {
   //enableHighAccuracy: true,
   timeout: 5000,
@@ -14,35 +13,38 @@ var options = {
 // When the page is rendered, grab location.
 // Make sure you load jQuery in your html doc FIRST!!
 jQuery(document).ready(function($) {
- //navigator.geolocation.getCurrentPosition(success, error, options);
-  $.ajax({
-     url: "https://www.govtrack.us/api/v2/role?current=true",
-     dataType: "json",
-     success: function(parsed_json) {
-       console.log(parsed_json);
-       document.getElementById('results').innerHTML =("<p><b>OMG REPS!</b></p>" );
+  navigator.geolocation.getCurrentPosition(success, error, options);
+  var apiKey = "default";
 
-       parsed_json['objects'].forEach( function (object)
-       {
-	console.log(object.person.name);
-	document.getElementById('results').innerHTML +=("<p>"+object.person.name +" 1-"+object.phone+" Web: "+object.website+" twitter :"+object.person.twitterid+"</p>" );
-       });
-         //name = parsed_json[person]['person']['name'];
-       }//temp_f = parsed_json['current_observation']['temp_f'];
-       //temp_c = parsed_json['current_observation']['temp_c'];
-       //var conditions=(parsed_json['current_observation']['weather']);
-       //var windSpeed=parsed_json['current_observation']['wind_mph'];
-       //var windDir=parsed_json['current_observation']['wind_dir'];
-       //tempFlag="F";
-       //if (conditions="Overcast"){
-       //conditions="Cloudy" //the iconset has an issue with overcast.
-       //}
-       //document.getElementById('results').innerHTML =("<p>"+name+"</p>" );
-       //document.getElementById('temperature').innerHTML =temp_f + " F";
-       //document.getElementById('weather').innerHTML = ("Conditions in "+userLocation + ":</br> " + conditions + " with winds at " +windSpeed+ "mph from the " + windDir);
-     //}
-  })
-})
+  // Api key is stored outside the web root cause security
+  $.ajax({ 
+      type: "GET",
+      url: "../google-api-key.json", 
+      success: function(file_content) {
+        apiKey=file_content.key;
+        console.log(apiKey);
+        console.log(url);
+        $.ajax({   
+        //url: "https://www.govtrack.us/api/v2/role?current=true",
+    
+        url: ("https://www.googleapis.com/civicinfo/v2/representatives?address=430+ne+alder+st+issaquah+wa&includeOffices=true&levels=country&levels=regional&roles=legislatorLowerBody&roles=legislatorUpperBody&key="+apiKey),
+        dataType: "json",
+        success: function(parsed_json) {
+        console.log(parsed_json);
+        document.getElementById('results').innerHTML =("<p><b>OMG REPS!</b></p>" );
+
+        parsed_json['officials'].forEach( function (object)
+        {
+	 console.log(object.name);
+	 document.getElementById('results').innerHTML +=("<p>"+object.name +"<a href=tel:1-"+ object.phones[0].replace(/\s+/g, '-')+">"+object.phones[0]+"</a>"+" Web: "+object.urls[0]+" twitter :"+object.channels[1]['id']+"</p>" );
+         });
+        }
+       })
+      }
+    })
+  });
+  var url = ("https://www.googleapis.com/civicinfo/v2/representatives?address=430+ne+alder+st+issaquah+wa&includeOffices=true&levels=country&levels=regional&roles=legislatorLowerBody&roles=legislatorUpperBody&key="+apiKey)
+
 //On successful browser location, get weather and update div.
 function success(pos) {
   crd = pos.coords;
