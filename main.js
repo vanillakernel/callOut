@@ -2,6 +2,7 @@ var latitude = undefined;
 var longitude = undefined;
 var name = "";
 var userLocation = undefined;
+var address = "";
 
 // Get their location, maybe
 var options = {
@@ -12,22 +13,22 @@ var options = {
 
 // When the page is rendered, grab location.
 // Make sure you load jQuery in your html doc FIRST!!
-jQuery(document).ready(function($) {
-  navigator.geolocation.getCurrentPosition(success, error, options);
-  var apiKey = "default";
+//jQuery(document).ready(function($) {
+//  navigator.geolocation.getCurrentPosition(success, error, options);
+//}
 
+function getReps(){
+  var apiKey = "default";
   // Api key is stored outside the web root cause security
   $.ajax({ 
       type: "GET",
       url: "../google-api-key.json", 
       success: function(file_content) {
         apiKey=file_content.key;
-        console.log(apiKey);
-        console.log(url);
         $.ajax({   
         //url: "https://www.govtrack.us/api/v2/role?current=true",
     
-        url: ("https://www.googleapis.com/civicinfo/v2/representatives?address=430+ne+alder+st+issaquah+wa&includeOffices=true&levels=country&levels=regional&roles=legislatorLowerBody&roles=legislatorUpperBody&key="+apiKey),
+        url: ("https://www.googleapis.com/civicinfo/v2/representatives?address="+encodeURIComponent(address)+"&includeOffices=true&levels=country&levels=regional&roles=legislatorLowerBody&roles=legislatorUpperBody&key="+apiKey),
         dataType: "json",
         success: function(parsed_json) {
         console.log(parsed_json);
@@ -36,14 +37,13 @@ jQuery(document).ready(function($) {
         parsed_json['officials'].forEach( function (object)
         {
 	 console.log(object.name);
-	 document.getElementById('results').innerHTML +=("<p>"+object.name +"<a href=tel:1-"+ object.phones[0].replace(/\s+/g, '-')+">"+object.phones[0]+"</a>"+" Web: "+object.urls[0]+" twitter :"+object.channels[1]['id']+"</p>" );
+	 document.getElementById('results').innerHTML +=("<p>"+object.name+" <a href=tel:1-"+ object.phones[0].replace(/\s+/g, '-')+">"+object.phones[0]+"</a>"+" Web: <a href="+object.urls[0]+">"+object.urls[0]+"</a>  "+" Tweet: "+"<a class=\"twitter-mention-button\" href=\"https://twitter.com/intent/tweet?screen_name="+object.channels[1]['id']+"&text=" + encodeURIComponent("I am a constituent and I am not happy!") + "\" >@"+object.channels[1]['id']+"</a> or <a href=twitter:"+object.channels[1]['id']+">"+"launch your twitter app.</a></p>" );
          });
         }
        })
       }
     })
-  });
-  var url = ("https://www.googleapis.com/civicinfo/v2/representatives?address=430+ne+alder+st+issaquah+wa&includeOffices=true&levels=country&levels=regional&roles=legislatorLowerBody&roles=legislatorUpperBody&key="+apiKey)
+};
 
 //On successful browser location, get weather and update div.
 function success(pos) {
@@ -91,18 +91,12 @@ function sleepFor( sleepDuration ){
     while(new Date().getTime() < now + sleepDuration){ /* do nothing */ } 
 }
 
-function toggleFC (){
-	if (tempFlag=="F"){
-        document.getElementById('temperature').innerHTML = temp_c + " C";
-	tempFlag="C";
+function getAddress (){
+	address=document.getElementById('address_input').value;
+        document.getElementById('address_input').innerHTML = document.getElementById('address_input').value;
+	console.log(address);
+	getReps();
 	return
-       }
-
-	if (tempFlag=="C"){
-        document.getElementById('temperature').innerHTML = temp_f + " F";
-	tempFlag="F";
-	return
-       }
 }
 
 

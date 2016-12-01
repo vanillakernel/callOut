@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Weather you like it or not.</title>
+  <title>callthem.today</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -13,37 +13,37 @@
 
 <body>
 <div class="container-fluid col-sm-8">
-	<div>	<h1 class=""> Them reps <h1> </div>
+	<div>	<h1 class=""> Call your reps! <h1> </div>
+</div>
 			
-<!--<div class="row center-block">
- <div class="col-sm-4">    
-     <button id="plusButton"class="btn btn-block btn-success btn-lg" onclick="getLocation()" >+1</button>
- </div>
-
---> 
-<p><button class="btn btn-default btn-xs"onclick="toggleFC()">F/C</button></p>
-<div id="out"></div>
-<div class ="row col-xs-8">
-<div class="text-right col-xs-4" id="icon"></div>
-<div class="text-center col-xs-4" id="temperature"><p></br></p></div>
+<div style="padding:16px;" id="address_box">
+    Address : <input id="address_input"type="textbox" value="Address or Zip Code"></input>
+    <button id="Get" onclick="getAddress()">Submit</button>
 </div>
 
-<!-- 
+<div class="text-center jumbotron col-sm-8" id="results"> Enter your zip code for reps! </div>
 
- <div class="col-sm-4">
-	     <button id="minusButton"class="btn btn-block btn-success btn-lg" onclick="minusTime()" >-1</button>
- </div>
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+<div id="twitter-button">
+  <a class="twitter-share-button"
+  href="https://twitter.com/intent/tweet?text=Check%20out%20callthem.today%20to%20easily%20contact%20your%20congressional%20reps!"
+  url ="http://www.callthem.today"
+  data-size="large">
+Share on Twitter</a>
 </div>
-
-  <div class="col-sm-8">    
-     <button id="countDownButton"class="btn btn-block btn-success btn-lg" onclick="countDown()" >Get This Party Started.</button>
-  </div>
- </div>
--->
-
-  <div class="text-center jumbotron col-sm-8" id="results"> Enter your zip code for reps! </div>
-
-<!--  <div class="col-sm-8">
-	  <a  href="#" onclick="reset()" data-size="large"><button class="btn btn-block btn-primary btn-lg" >Reset</button></a>
-       </div>-->
 </body>
