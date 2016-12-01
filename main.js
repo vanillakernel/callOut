@@ -13,12 +13,50 @@ var options = {
 
 // When the page is rendered, grab location.
 // Make sure you load jQuery in your html doc FIRST!!
-//jQuery(document).ready(function($) {
-//  navigator.geolocation.getCurrentPosition(success, error, options);
-//}
+jQuery(document).ready(function($) {
+//navigator.geolocation.getCurrentPosition(success, error, options);
+  cookieAddress = checkCookie();
+  console.log(cookieAddress);
+  if (cookieAddress != "" && cookieAddress != undefined){
+     address=cookieAddress;
+     getReps();
+  } 
+});
+
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length,c.length);
+        }
+    }
+    return "";
+}
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function checkCookie() {
+    var address=getCookie("address");
+    if (address!="" && address!=undefined) {
+        console.log(address + " is in the cookie.");
+	return address;
+    } 
+}
 
 function getReps(){
   var apiKey = "default";
+  
   // Api key is stored outside the web root cause security
   $.ajax({ 
       type: "GET",
@@ -32,12 +70,17 @@ function getReps(){
         dataType: "json",
         success: function(parsed_json) {
         console.log(parsed_json);
-        document.getElementById('results').innerHTML =("<p><b>OMG REPS!</b></p>" );
+        document.getElementById('results').innerHTML =("<p><b>Your congressional representatives for " +address+ "</b></p>" );
 
         parsed_json['officials'].forEach( function (object)
         {
 	 console.log(object.name);
-	 document.getElementById('results').innerHTML +=("<p>"+object.name+" <a href=tel:1-"+ object.phones[0].replace(/\s+/g, '-')+">"+object.phones[0]+"</a>"+" Web: <a href="+object.urls[0]+">"+object.urls[0]+"</a>  "+" Tweet: "+"<a class=\"twitter-mention-button\" href=\"https://twitter.com/intent/tweet?screen_name="+object.channels[1]['id']+"&text=" + encodeURIComponent("I am a constituent and I am not happy!") + "\" >@"+object.channels[1]['id']+"</a> or <a href=twitter:"+object.channels[1]['id']+">"+"launch your twitter app.</a></p>" );
+	 document.getElementById('results').innerHTML +=("<div class=\"well well-lg\"><h3>"+object.name+"</h3>"+
+         "<p> Call: <a href=tel:1-"+ object.phones[0].replace(/\s+/g, '-')+">"+object.phones[0]+"</br>"+
+         "</a>"+" Web: <a href="+object.urls[0]+">"+object.urls[0]+"</a>  </br>"+
+         " Tweet: "+"<a class=\"twitter-mention-button btn btn-primary\" href=\"https://twitter.com/intent/tweet?"+
+           "&text=" + encodeURIComponent("@"+ object.channels[1]['id']  + " I am a constituent and I am not happy!") + "\" >@"+object.channels[1]['id']+
+           "</a> or <a class=\"twitter-mention-button btn btn-default\" href=twitter://post?message=@"+object.channels[1]['id']+"%20%20%20%23callthem>"+"launch your twitter app.</a></p>  </div>" );
          });
         }
        })
@@ -94,6 +137,9 @@ function sleepFor( sleepDuration ){
 function getAddress (){
 	address=document.getElementById('address_input').value;
         document.getElementById('address_input').innerHTML = document.getElementById('address_input').value;
+        if (address != "" && address != undefined){
+           setCookie("address",address,365)
+        } 
 	console.log(address);
 	getReps();
 	return
