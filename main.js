@@ -83,9 +83,10 @@ function getReps(){
 	 document.getElementById('results').innerHTML +=("<div class=\"well well-lg\"><h3>"+object.name+"</h3>"+
          "<p> Call: <a class=\"btn btn-success\" href=tel:1-"+ object.phones[0].replace(/\s+/g, '-')+">"+object.phones[0]+"</a>"+
          "</br>"+" Web: <b><a class=\"btn btn-sm btn-link\" style=\"font-size:.8em;\" href="+object.urls[0]+">"+"Click to go to website."+"</b></a>  </br>"+
-         " Twitter: "+"<a class=\"twitter-mention-button btn btn-primary\" href=\"https://twitter.com/intent/tweet?"+
-           "&text=" + encodeURIComponent("@"+ object.channels[1]['id']  + " I am a constituent and I am not happy!   #callthem") + "\" >@"+object.channels[1]['id']+
-           "</a>"+" or<a class=\"twitter-mention-button btn btn-link\" href=twitter://post?message=@"+object.channels[1]['id']+"%20%20%20%23callthem>"+"launch app.</a>"+" </p></div>" );
+         " Twitter: "+"<a style=\"background:white;color:blue;\" class=\"twitter-mention-button btn btn-primary\" href=\"https://twitter.com/intent/tweet?"+
+           "&text=" + encodeURIComponent("@"+ object.channels[1]['id']  + " I am a constituent and I am not happy!   #callthem") + "\" >@"+object.channels[1]['id']+"</a>"
+            //+" or<a class=\"twitter-mention-button btn btn-link\" href=twitter://post?message=@"+object.channels[1]['id']+"%20%20%20%23callthem>"+"launch app.</a>"
+           +" </p></div>" );
          });
         }
        })
