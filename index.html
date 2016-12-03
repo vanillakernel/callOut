@@ -9,24 +9,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="main.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-</head>  
-
-<body>
-<div class="container-fluid col-sm-8">
-	<div>	<h1 class=""> Call them today! <h1> </div>
-</div>
-
-<center>			
-<div style="padding:16px;" id="address_box">
-    <input class="btn btn-lg btn-default" size= 10  id="address_input"type="textbox" value=""></input>
-    <button class="btn btn-info btn-lg"  id="Get" onclick="getAddress()">Submit</button>
-    <button class="btn btn-link btn-lg"  id="Get" onclick="clearCookie()">Reset</button></center>
-</div>
-</center>
-
-<div class="text-center jumbotron col-sm-8" id="results"><h2> Enter your zip, address, local landmark, or cross streets for reps!</h2> </div>
-
-<script>window.twttr = (function(d, s, id) {
+  <script>window.twttr = (function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0],
     t = window.twttr || {};
   if (d.getElementById(id)) return t;
@@ -42,11 +25,103 @@
 
   return t;
 }(document, "script", "twitter-wjs"));</script>
-<div id="twitter-button">
-  <a class="twitter-share-button"
-  href="https://twitter.com/intent/tweet?text=Check%20out%20callthem.today%20to%20easily%20contact%20your%20congressional%20reps!"
-  url ="http://www.callthem.today"
+</head>  
+
+<body>
+<div style="float:right;">
+     <a class="twitter-share-button"
+  href="https://twitter.com/intent/tweet?text=CallThem%20makes%20civic%20participation%20easy.%20%23callThem"
   data-size="large">
-Share on Twitter</a>
+CLICK ME PLEASE</a>
 </div>
+     <div class="dropdown" id="scripts_dropdown">
+       <button class="btn btn-info btn-sm dropdown-toggle" id="menu1" type="button" data-toggle="dropdown">Sample Scripts
+       <span class="caret"></span></button>
+       <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+         <li role="presentation"><a role="menuitem" tabindex="-1" href="" data-toggle="modal" data-target="#generalModal">General Guidance.</a></li>
+         <li role="presentation" class="divider"></li>
+         <li role="presentation"><a role="menuitem" tabindex="-1" href="" data-toggle="modal" data-target="#healthModal">Health Care</a></li>
+         <li role="presentation"><a role="menuitem" tabindex="-1" href="" data-toggle="modal" data-target="#immigrationModal">Immigration</a></li>
+         <li role="presentation"><a role="menuitem" tabindex="-1" href="" data-toggle="modal" data-target="#reproductiveModal">Reproductive Rights</a></li>
+         <li role="presentation"><a role="menuitem" tabindex="-1" href="" data-toggle="modal" data-target="#civilModal">Civil Liberties</a></li>
+         <li role="presentation"><a role="menuitem" tabindex="-1" href="" data-toggle="modal" data-target="#marriageModal">Marriage Equality</a></li>
+         <li role="presentation"><a role="menuitem" tabindex="-1" href="" data-toggle="modal" data-target="#policeModal">Police Brutality/Criminal Justice</a></li>
+         <li role="presentation"><a role="menuitem" tabindex="-1" href="" data-toggle="modal" data-target="#refugeesModal">Refugees</a></li>
+         <li role="presentation"><a role="menuitem" tabindex="-1" href="" data-toggle="modal" data-target="#gunModal">Gun Violence Prevention</a></li>
+         <li role="presentation"><a role="menuitem" tabindex="-1" href="" data-toggle="modal" data-target="#climateModal">Climate Changes</a></li>
+         <li role="presentation" class="divider"></li>
+         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">About Scripts</a></li>    
+       </ul>
+     </div>
+
+<center>			
+<div style="padding:16px;" id="address_box" class="">
+    <input class="btn-lg" size= 10  style="height:3em;vertical-align:bottom;" id="address_input"type="textbox" value=""></input>
+    <button class="btn btn-primary btn-lg" style="height:3em;"  id="Get" onclick="getAddress()">Submit</button>
+    <button class="btn btn-link btn-lg"  id="Get" onclick="clearCookie()">Reset</button></center>
+</div>
+</center>
+
+
+
+<div class="text-left jumbotron col-sm-8" id="results"><h2> Enter your zip, address, local landmark, or cross streets for reps!</h2> </div>
+
 </body>
+
+<!-- Modals -->
+
+<div id="generalModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">General Guidance for Calling Your Congresspeople.</h4>
+      </div>
+      <div class="modal-body">
+        <p> 1. Call a state or district office first.</p>
+	<p> 2. Leave a voicemail. If voicemail is full, press "0." This will typically connect you to a receptionist who may be able to take your message or transfer you to a voicemail that isn't full.</p>
+        <p> 3. Call the national office, if you can't get through. Or to see if you can get a real person.</p>
+        <p> 4. Be prepared to give your name and your location. You can refer to yourself as a constituent, as per the script, and they might not ask.</p>
+	<p> 5. Note that the operator is likely using some kind of form to mark your call, the goal is to generate a high volume of calls that require the operator to check off individual boxes. That means it’s critical to name your issues specifically and not just say something like "oppose Trump."</p>
+        <p>6. Read <a target="_blank" href="http://www.attn.com/stories/12768/former-congressional-staffer-explains-how-to-make-congressman-listen"> this set of tweets </a> for more on why these calls work. </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- healthModal -->
+<div id="healthModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Health Care Script</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel-group">
+          <div class="panel panel-info">
+            <div class="panel-heading">Script for Progressive/History of Agreement on Issue </div>
+            <div class="panel-body">I'm ---- -----, a constituent calling to thank Senator/Rep ___ for supporting affordable health care and ask for continued support. I'm one of 20 million Americans who count on a marketplace plan for insurance. If the Affordable Care Act is overturned, I will lose access to healthcare. I want the [Senator/Representative] to block attempts to repeal the ACA.</div>
+          </div>
+
+          <div class="panel panel-danger">
+            <div class="panel-heading">Script for Conservative/History of Opposition</div>
+            <div class="panel-body">I'm ---- -----, a constituent calling to ask Senator/Rep to support affordable healthcare. I'm one of 20 million Americans who count on a marketplace plan for insurance. If the Affordable Care Act is overturned, I will lose access to healthcare. I want the [Senator/Representative] to vote against repealing the ACA.</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>

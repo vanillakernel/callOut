@@ -56,7 +56,7 @@ function checkCookie() {
 
 function clearCookie(){
     setCookie("address", "", 1);
-    document.getElementById('results').innerHTML =("<h2> Address cleared.</br>Enter another location.</h2>");
+    document.getElementById('results').innerHTML =("<center><h2> Address cleared.</br>Enter another location.</h2></center>");
 }
 
 function getReps(){
@@ -75,17 +75,17 @@ function getReps(){
         dataType: "json",
         success: function(parsed_json) {
         console.log(parsed_json);
-        document.getElementById('results').innerHTML =("<p><b>Your congressional representatives for " +address+ "</b></p>" );
+        document.getElementById('results').innerHTML =("<center><p><b>Your congressional representatives for " +address+ "</center></b></p>" );
 
         parsed_json['officials'].forEach( function (object)
         {
 	 console.log(object.name);
 	 document.getElementById('results').innerHTML +=("<div class=\"well well-lg\"><h3>"+object.name+"</h3>"+
          "<p> Call: <a class=\"btn btn-success\" href=tel:1-"+ object.phones[0].replace(/\s+/g, '-')+">"+object.phones[0]+"</a>"+
-         "</br>"+" Web: <a href="+object.urls[0]+">"+object.urls[0]+"</a>  </br>"+
-         " Tweet: "+"<a class=\"twitter-mention-button btn btn-primary\" href=\"https://twitter.com/intent/tweet?"+
-           "&text=" + encodeURIComponent("@"+ object.channels[1]['id']  + " I am a constituent and I am not happy!") + "\" >@"+object.channels[1]['id']+
-           "</a> or <a class=\"twitter-mention-button btn btn-default\" href=twitter://post?message=@"+object.channels[1]['id']+"%20%20%20%23callthem>"+"launch your twitter app.</a></p>  </div>" );
+         "</br>"+" Web: <b><a class=\"btn btn-sm btn-link\" style=\"font-size:.8em;\" href="+object.urls[0]+">"+"Click to go to website."+"</b></a>  </br>"+
+         " Twitter: "+"<a class=\"twitter-mention-button btn btn-primary\" href=\"https://twitter.com/intent/tweet?"+
+           "&text=" + encodeURIComponent("@"+ object.channels[1]['id']  + " I am a constituent and I am not happy!   #callthem") + "\" >@"+object.channels[1]['id']+
+           "</a>"+" or<a class=\"twitter-mention-button btn btn-link\" href=twitter://post?message=@"+object.channels[1]['id']+"%20%20%20%23callthem>"+"launch app.</a>"+" </p></div>" );
          });
         }
        })
