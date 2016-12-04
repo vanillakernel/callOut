@@ -1,20 +1,10 @@
-var latitude = undefined;
-var longitude = undefined;
 var name = "";
-var userLocation = undefined;
 var address = "";
 
-// Get their location, maybe
-var options = {
-  //enableHighAccuracy: true,
-  timeout: 5000,
-  maximumAge: 0
-};
 
-// When the page is rendered, grab location.
+// When the page is rendered, grab check the cookie.
 // Make sure you load jQuery in your html doc FIRST!!
 jQuery(document).ready(function($) {
-//navigator.geolocation.getCurrentPosition(success, error, options);
   cookieAddress = checkCookie();
   console.log(cookieAddress);
   if (cookieAddress != "" && cookieAddress != undefined){
@@ -59,10 +49,16 @@ function clearCookie(){
     document.getElementById('results').innerHTML =("<center><h2> Address cleared.</br>Enter another location.</h2></center>");
 }
 
+
+////////////////////////////////////////////////
+// This is the most important method, and does a bunch
+// of stuff. TODO handle error cases for loading the key.
+// And  make it more legible.
+/////////////////////////////////////////////////
 function getReps(){
   var apiKey = "default";
   
-  // Api key is stored outside the web root cause security
+  // Api key is stored outside the web root cause security.
   $.ajax({ 
       type: "GET",
       url: "../google-api-key.json", 
@@ -76,61 +72,42 @@ function getReps(){
         success: function(parsed_json) {
         console.log(parsed_json);
         document.getElementById('results').innerHTML =("<center><p><b>Your congressional representatives for " +address+ "</center></b></p>" );
-
+        twitterHandle = "";
         parsed_json['officials'].forEach( function (object)
         {
-	 console.log(object.name);
+	 object.channels.forEach( function (channel){
+
+           // Check their twitter handle.
+           if (channel['type'] == "Twitter"){
+             twitterHandle=channel['id'];
+           }
+         });
+         // TODO break this up and only render elements if they exist.
 	 document.getElementById('results').innerHTML +=("<div class=\"well well-lg\"><h3>"+object.name+"</h3>"+
          "<p> Call: <a class=\"btn btn-success\" href=tel:1-"+ object.phones[0].replace(/\s+/g, '-')+">"+object.phones[0]+"</a>"+
          "</br>"+" Web: <b><a class=\"btn btn-sm btn-link\" style=\"font-size:.8em;\" href="+object.urls[0]+">"+"Click to go to website."+"</b></a>  </br>"+
-         " Twitter: "+"<a style=\"background:white;color:#4099FF;\" class=\"twitter-mention-button btn btn-primary\" href=\"https://twitter.com/intent/tweet?"+
-           "&text=" + encodeURIComponent("@"+ object.channels[1]['id']  + " I am a constituent and I am not happy!   #callthem") + "\" >@"+object.channels[1]['id']+"</a>"
+         " Twitter: "+"<a style=\"background:white;color:#4099FF;border-color:#4099FF;\" class=\"twitter-mention-button btn btn-primary\" href=\"https://twitter.com/intent/tweet?"+
+           "&text=" + encodeURIComponent("@"+ twitterHandle  + " I am a constituent and I am not happy!   #callthem") + "\" >@"+twitterHandle+"</a>"
             //+" or<a class=\"twitter-mention-button btn btn-link\" href=twitter://post?message=@"+object.channels[1]['id']+"%20%20%20%23callthem>"+"launch app.</a>"
            +" </p></div>" );
          });
-        }
+        },
+        error: function(data){
+          console.log(data);
+          //get the status code
+          if (data.status == 400) {
+              document.getElementById('results').innerHTML =('<h2> <span class=\"text blockquote text-danger \">The address is invalid. </br> Please try a full street address, zip code, or city.</span></h2>');
+          }
+          if (data.status == 404) {
+              document.getElementById('results').innerHTML =('<h2> <span class=\"text blockquote text-danger \">Something went wrong. </br> Please try again.</span></h2>');
+          }
+          if (data.code == 500) {
+              document.getElementById('results').innerHTML =('<h2> <span class=\"text blockquote text-danger \">Something went wrong with the server.</br> Please try again.</span></h2>');
+          }
+        },
        })
       }
     })
-};
-
-//On successful browser location, get weather and update div.
-function success(pos) {
-  crd = pos.coords;
-  longitude = crd.longitude;
-  // crd.accuracy
-  latitude = crd.latitude;
-  $.ajax({
-       url: "https://www.govtrack.us/api/v2/role?current=true.json",
-     dataType: "jsonp",
-     success: function(parsed_json) {
-       console.log(parsed_json)
-       userLocation = parsed_json['location']['city'];
-       temp_f = parsed_json['current_observation']['temp_f'];
-       temp_c = parsed_json['current_observation']['temp_c'];
-       var conditions=(parsed_json['current_observation']['weather']);
-       var windSpeed=parsed_json['current_observation']['wind_mph'];
-       var windDir=parsed_json['current_observation']['wind_dir'];
-       tempFlag="F";
-       if (conditions="Overcast"){
-	conditions="Cloudy" //the iconset has an issue with overcast.
-       }
-       document.getElementById('icon').innerHTML ="<img src='http://icons.wxug.com/i/c/i/"+conditions.toLowerCase() +".gif'></img>";
-       document.getElementById('temperature').innerHTML =temp_f + " F";
-       document.getElementById('weather').innerHTML = ("Conditions in "+userLocation + ":</br> " + conditions + " with winds at " +windSpeed+ "mph from the " + windDir);
-     }
-   });
-  console.log("geolocations successful", latitude, longitude);
-};
-
-// If something goes wrong getting weather.
-function error(err) {
-  if (error.code == error.PERMISSION_DENIED) {
-        document.getElementById('results').innerHTML ="Populating with desfault reps.";
-    }
-  else{
-  console.warn('ERROR(' + err.code + '): ' + err.message);
-  document.getElementById('weather').innerHTML ="Something went wrong: "+err.message;}
 };
 
 
@@ -140,6 +117,8 @@ function sleepFor( sleepDuration ){
     while(new Date().getTime() < now + sleepDuration){ /* do nothing */ } 
 }
 
+
+// Just grabs the input value and sets a cookie. Nothing exciting.
 function getAddress (){
 	address=document.getElementById('address_input').value;
         document.getElementById('address_input').innerHTML = document.getElementById('address_input').value;
