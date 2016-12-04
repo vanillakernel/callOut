@@ -8,6 +8,11 @@
   <link rel="stylesheet" href="main.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="main.js"></script>
+  
+  <script src="ics.js"></script>
+  <script src="blob.js"></script>
+  <script src="fileSaver.js"></script>
+  
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   <script>window.twttr = (function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0],
@@ -28,6 +33,17 @@
 </head>  
 
 <body>
+
+<script>
+    var cal = ics();
+    cal.addEvent('Demo Event', 'This is an all day event', 'Nome, AK', '8/7/2013', '8/7/2013');
+    cal.addEvent('Demo Event', 'This is thirty minut event', 'Nome, AK', '8/7/2013 5:30 pm', '8/9/2013 6:00 pm');
+</script>
+
+<!--
+<a href="javascript:cal.download()">Demo</a>
+-->
+
 <div style="float:right;">
      <a class="twitter-share-button"
   href="https://twitter.com/intent/tweet?text=CallThem%20makes%20civic%20participation%20easy.%20%23callThem"
